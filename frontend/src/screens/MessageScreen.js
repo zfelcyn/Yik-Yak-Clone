@@ -1,3 +1,5 @@
+//This screen isn't really needed quite yet.
+
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
