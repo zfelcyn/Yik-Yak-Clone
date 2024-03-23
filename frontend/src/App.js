@@ -3,8 +3,8 @@ import { Container } from "react-bootstrap";
 import React, { Component } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HomeScreen from "./screens/HomeScreen";
-import MessageScreen from "./screens/MessageScreen";
+import HomeScreen from "./Screens/HomeScreen";
+import MessageScreen from "./Screens/MessageScreen";
 
 class App extends Component {
   render() {

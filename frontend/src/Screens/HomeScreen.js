@@ -7,15 +7,11 @@ import messages from "../messages";
 function HomeScreen() {
   return (
     <div>
-      <h1>Hot Singles in Your Area</h1>
-
-      <Row>
         {messages.map((message) => (
-          <Col key={message._id} sm={12} md={6} lg={4} xl={3}>
+          <Row key={message._id} xs={1} sm={1} md={1} lg={1} xl={1}>
             <Message message={message} />
-          </Col>
+          </Row>
         ))}
-      </Row>
     </div>
   );
 }
