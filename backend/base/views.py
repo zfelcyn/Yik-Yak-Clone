@@ -21,3 +21,15 @@ def getRoutes(request):
 @api_view(['GET'])
 def getMessages(request):
     return Response(messages)  # Remove safe=False since it's not needed
+
+#TODO Make messages be encyption key 
+@api_view(['GET'])
+def getMessage(request, pk):
+    message = None
+    for i in messages: 
+        if i['_id'] == pk:
+            message = i 
+            break
+
+    return Response(message)  # Remove safe=False since it's not needed
+
