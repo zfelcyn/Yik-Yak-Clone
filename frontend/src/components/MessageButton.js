@@ -23,7 +23,7 @@ const MessageButton = () => {
         justifyContent: "right",
         alignItems: "center", 
         height: "10px", 
-        width: "15px", 
+        width: "10px", 
         backgroundColor: "transparent"
       }}
     >
