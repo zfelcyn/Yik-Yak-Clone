@@ -1,5 +1,6 @@
 from django.urls import path # imports path funmction from django library
 from . import views # imports views from local files, each view functionr returns an http result
+from .views import RegisterView, CustomLoginView, CustomLogoutView
 
 # url patterns are something that django uses to route incomming http requests to the appropritate view
 # based on the requests url path. An http request is a message sent by a client to a server,\
@@ -14,6 +15,10 @@ urlpatterns = [
     # matches an empty string representing the root URL of the website, and route those requests to the home function
     # in the views module. The name = 'home' assigns a name to the url, which we can type in the website url
     path('', views.home, name='home'),
+    path ('register/', RegisterView.as_view(), name='register'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+
     # dynamic segment <str:room> matches any string and passes a room argum,ent, hekpful for creating urls based on username
     path('<str:room>/', views.room,name='room'),
     # path that leads to checkview, will explain this more in .views
