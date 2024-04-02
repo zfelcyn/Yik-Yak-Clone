@@ -100,6 +100,8 @@ body {
         {% csrf_token %}
         <label> </label>
         {{ form.as_p }}
+        <label>Location</label>
+        <input type="text" name="room_name" id="room_name" width="100px" />
         <button type="submit">Login</button>
     </form>
 
