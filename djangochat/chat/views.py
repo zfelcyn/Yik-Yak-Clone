@@ -19,12 +19,13 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 # Create your views here. Takes a http response and returns an http response, landing page of the chat app
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'login.html')
 
 # handles the logic of joining teh chat room
 def room(request, room):
     # extracts username from the get request parameters
     username = request.user.username
+    print(username)
     # queries the room model for a room with the given name and stores it in
     # room_details. This retrieves info about the chat room from the database
     room_details  = get_object_or_404(Room, name=room)
