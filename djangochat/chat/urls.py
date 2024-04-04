@@ -14,11 +14,11 @@ from .views import RegisterView, CustomLoginView, CustomLogoutView
 urlpatterns = [
     # matches an empty string representing the root URL of the website, and route those requests to the home function
     # in the views module. The name = 'home' assigns a name to the url, which we can type in the website url
-    path('', views.home, name='home'),
-    path ('register/', RegisterView.as_view(), name='register'),
+    path('login/',CustomLoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
-
+    path('login/checkview/',views.checkview, name='login2'),
     # dynamic segment <str:room> matches any string and passes a room argum,ent, hekpful for creating urls based on username
     path('<str:room>/', views.room,name='room'),
     # path that leads to checkview, will explain this more in .views

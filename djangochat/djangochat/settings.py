@@ -133,3 +133,5 @@ LOGIN_REDIRECT_URL = '/'
 # Redirect to login page after logout
 LOGOUT_REDIRECT_URL = '/chat/login/'
 
+APPEND_SLASH = False
+

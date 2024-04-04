@@ -24,7 +24,7 @@ def home(request):
 # handles the logic of joining teh chat room
 def room(request, room):
     # extracts username from the get request parameters
-    username = request.GET.get('username')
+    username = request.user.username
     # queries the room model for a room with the given name and stores it in
     # room_details. This retrieves info about the chat room from the database
     room_details  = get_object_or_404(Room, name=room)
@@ -40,7 +40,7 @@ def room(request, room):
 def checkview(request):
     # retrives the room name and username from the POST request data
     room = request.POST['room_name']
-    username = request.POST['username']
+    username = request.user.username
 
     # checks if the room exists in the database
     if Room.objects.filter(name=room).exists():
@@ -79,9 +79,7 @@ def getMessages(request, room):
 
 
 class RegisterView(View):
-    print("PENIS")
     form_class = CustomUserCreationForm
-    print("ALSO PENIS")
 
     def get(self, request, *args, **kwargs):
         print("test1")
@@ -94,7 +92,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')  # Redirect to your home page or wherever you like
+            return redirect('login')  # Redirect to your home page or wherever you like
         return render(request, 'register.html', {'form': form})
     
 class CustomLoginView(LoginView):

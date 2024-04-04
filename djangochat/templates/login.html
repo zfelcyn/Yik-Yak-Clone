@@ -57,7 +57,7 @@ body {
 
 <div align="center">
     <h2>Yik Yak 2: A Royce Dupont Innovation</h2>
-    <p class="smaller-text">Sponsored by PornHub and Sinola Cartel</p>
+    <p class="smaller-text">Sponsored by PornHub</p>
 </div>
 
 
@@ -96,7 +96,7 @@ body {
     </style>
 
 
-    <form method="post">
+    <form id="post" method="POST" action="http://127.0.0.1:8000/login/checkview/">
         {% csrf_token %}
         <label> </label>
         {{ form.as_p }}
