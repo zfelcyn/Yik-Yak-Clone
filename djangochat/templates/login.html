@@ -82,7 +82,7 @@
     <div class="top-right-buttons">
       <button onclick="window.location.href='https://github.com/zfelcyn/Yik-Yak-Clone'">GitHub</button>
       <button onclick="window.location.href='http://localhost:8000/register/'">Register</button>
-      <button onclick="window.location.href='http://localhost:8000/readme/'">ReadMe</button>
+      <button onclick="displayReadMe()">ReadMe</button>
     </div>
     <div class="container">
       <h2>Node-Yak 🐐</h2>
@@ -115,6 +115,10 @@
       </form>
     </div>
     <script>
+      function displayReadMe() {
+        alert("Django Backend Project for CPTS 322. User Auth under Dev");
+      }
+
       window.onload = function () {
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
