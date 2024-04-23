@@ -13,7 +13,7 @@
         margin: 0;
         padding: 0;
         font-family: "Open Sans", sans-serif;
-        background-color: #f0f3f7;
+        background: linear-gradient(to bottom right, #007aff, #000); /* Blue to darker gradient */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -26,6 +26,7 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 400px;
+        position: relative;
       }
       h2 {
         color: #007aff;
@@ -51,8 +52,7 @@
         box-sizing: border-box;
         width: 100%;
       }
-      button[type="submit"],
-      button[type="button"] {
+      button {
         background-color: #007aff;
         color: white;
         padding: 14px 20px;
@@ -62,20 +62,30 @@
         cursor: pointer;
         font-weight: 600;
       }
-      button[type="button"] {
-        background-color: #f2f2f2;
-        color: #007aff;
-      }
-      button[type="submit"]:hover,
-      button[type="button"]:hover {
+      button:hover {
         background-color: #0056b3;
         color: white;
+      }
+      .top-right-buttons {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+      .top-right-buttons button {
+        background-color: #f2f2f2;
+        color: #007aff;
+        margin-left: 4px;
       }
     </style>
   </head>
   <body>
+    <div class="top-right-buttons">
+      <button onclick="window.location.href='https://github.com/zfelcyn/Yik-Yak-Clone'">GitHub</button>
+      <button onclick="window.location.href='http://localhost:8000/register/'">Register</button>
+      <button onclick="window.location.href='http://localhost:8000/readme/'">ReadMe</button>
+    </div>
     <div class="container">
-      <h2>Node-Social</h2>
+      <h2>Node-Yak 🐐</h2>
       <p class="smaller-text">Powered by Django Backend</p>
       <form
         id="post"
@@ -102,12 +112,6 @@
           placeholder="Location"
         />
         <button type="submit">Login</button>
-        <button
-          type="button"
-          onclick="window.location.href='http://localhost:8000/register/'"
-        >
-          Register
-        </button>
       </form>
     </div>
     <script>
@@ -147,3 +151,4 @@
     </script>
   </body>
 </html>
+
