@@ -1,162 +1,165 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  margin: 0 auto;
-  max-width: 800px;
-  padding: 0 20px;
-}
-
-.container {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-.darker {
-  border-color: #ccc;
-  background-color: #ddd;
-}
-
-.container::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.container img {
-  float: left;
-  max-width: 60px;
-  width: 100%;
-  margin-right: 20px;
-  border-radius: 50%;
-}
-
-.container img.right {
-  float: right;
-  margin-left: 20px;
-  margin-right:0;
-}
-
-.time-right {
-  float: right;
-  color: #aaa;
-}
-
-.time-left {
-  float: left;
-  color: #999;
-}
-</style>
-<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
-</head>
-<body>
-
-<h2>{{room}} - DjChat</h2>
-
-<div id="display">
-
-<!-- <div class="container darker">
-  <b>Tom</b><p>Hello Everyone, How Are You Guys Doing?</p>
-  <span class="time-left">20th, April 2021</span>
-</div> -->
-
-</div>
-
-<script>
-$(document).ready(function(){
-
-setInterval(function(){
-    $.ajax({
-        type: 'GET',
-        url : "/getMessages/{{room}}/",
-        success: function(response){
-            console.log(response);
-            $("#display").empty();
-            for (var key in response.messages)
-            {
-                var temp="<div class='container darker'><b>"+response.messages[key].user+"</b><p>"+response.messages[key].value+"</p><span class='time-left'>"+response.messages[key].date+"</span></div>";
-                $("#display").append(temp);
-            }
-        },
-        error: function(response){
-            alert('An error occured')
-        }
-    });
-},1000);
-})
-</script>
-
-
-<div class="container">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{room}} - Chat Room</title>
     <style>
-    input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    }
-
-    input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    }
-
-    input[type=submit]:hover {
-    background-color: #45a049;
-    }
-
-    div {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    }
-    </style>
-
-    <form id="post-form">
-        {% csrf_token %}
-        <input type="hidden" name="username" id="username" value="{{username}}"/>
-        <input type="hidden" name="room_id" id="room_id" value="{{room_details.id}}"/>
-        <input type="text" name="message" id="message" width="100px" />
-        <input type="submit" value="Send">
-    </form>
-</div>
-
-
-</body>
-
-<script type="text/javascript">
-  $(document).on('submit','#post-form',function(e){
-    e.preventDefault();
-
-    $.ajax({
-      type:'POST',
-      url:'/send',
-      data:{
-          username:$('#username').val(),
-          room_id:$('#room_id').val(),
-          message:$('#message').val(),
-        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-      },
-      success: function(data){
-         //alert(data)
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #121212; /* Dark background for the whole page */
+        color: #e0e0e0; /* Light text for readability */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
       }
-    });
-    document.getElementById('message').value = ''
-  });
-</script>
 
+      h2 {
+        color: #0dafff; /* Light blue color for the heading */
+        margin-top: 20px;
+      }
+
+      .container {
+        background-color: #1e1e1e; /* Slightly lighter dark shade for containers */
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        border: 1px solid #333333; /* Dark border to blend in */
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        width: 100%;
+        max-width: 360px;
+        margin: 10px 0;
+      }
+
+      .darker {
+        background-color: #2a2a2a; /* Even lighter dark shade for message containers */
+      }
+
+      .user-name {
+        font-weight: bold;
+        color: #4caf50; /* Green color to highlight user names */
+        margin-right: 5px; /* Space between name and message */
+      }
+
+      .message-text {
+        color: #ffffff; /* White color for message text */
+      }
+
+      .time-left {
+        color: #aaa; /* Grey color for timestamps */
+        float: right;
+      }
+
+      input[type="text"],
+      select {
+        width: calc(100% - 24px);
+        padding: 12px;
+        margin-top: 8px;
+        border: none;
+        border-radius: 20px;
+        box-sizing: border-box;
+        background-color: #333333; /* Dark input fields */
+        color: #ddd; /* Light text for inputs */
+      }
+
+      input[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background-color: #007aff; /* Bright blue submit button */
+        border: none;
+        border-radius: 20px;
+        color: white;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #005ecb; /* Darker blue on hover */
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  </head>
+  <body>
+    <h2>{{room}} - Chat Room</h2>
+
+    <div id="display" class="container">
+      <!-- Message display area will be updated by AJAX below -->
+    </div>
+
+    <div class="container">
+      <form id="post-form">
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="username"
+          id="username"
+          value="{{username}}"
+        />
+        <input
+          type="hidden"
+          name="room_id"
+          id="room_id"
+          value="{{room_details.id}}"
+        />
+        <input
+          type="text"
+          name="message"
+          id="message"
+          placeholder="Type your message here..."
+        />
+        <input type="submit" value="Send" />
+      </form>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        setInterval(function () {
+          $.ajax({
+            type: "GET",
+            url: "/getMessages/{{room}}/",
+            success: function (response) {
+              $("#display").empty();
+              for (var key in response.messages) {
+                var temp =
+                  "<div class='container darker'><span class='user-name'>" +
+                  response.messages[key].user +
+                  "</span><span class='message-text'>" +
+                  response.messages[key].value +
+                  "</span><span class='time-left'>" +
+                  response.messages[key].date +
+                  "</span></div>";
+                $("#display").append(temp);
+              }
+            },
+            error: function () {
+              alert("An error occurred");
+            },
+          });
+        }, 1000);
+
+        $(document).on("submit", "#post-form", function (e) {
+          e.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: "/send",
+            data: {
+              username: $("#username").val(),
+              room_id: $("#room_id").val(),
+              message: $("#message").val(),
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function () {
+              $("#message").val(""); // Clear the input after send
+            },
+          });
+        });
+      });
+    </script>
+  </body>
 </html>
+
