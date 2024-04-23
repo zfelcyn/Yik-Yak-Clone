@@ -9,18 +9,26 @@ from chat.models import Room, Message
 # httpresponse is used to pass the response back to the web browser, and jsonresponse
 # is a subclass of httpresponse that helps to create a json encoded response
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404
+
+from django.urls import reverse_lazy
+from django.views.generic import View
+from django.contrib.auth import login, logout
+from django.contrib.auth.views import LoginView, LogoutView
+from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 # Create your views here. Takes a http response and returns an http response, landing page of the chat app
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'login.html')
 
 # handles the logic of joining teh chat room
 def room(request, room):
     # extracts username from the get request parameters
-    username = request.GET.get('username')
+    username = request.user.username
+    print(username)
     # queries the room model for a room with the given name and stores it in
     # room_details. This retrieves info about the chat room from the database
-    room_details  = Room.objects.get(name=room)
+    room_details  = get_object_or_404(Room, name=room)
     # renders room.html template, passing in username, room name, and room_details for context to the template
     # this is teh main chat room page where messages are displayed
     return render(request, 'room.html', {
@@ -33,7 +41,7 @@ def room(request, room):
 def checkview(request):
     # retrives the room name and username from the POST request data
     room = request.POST['room_name']
-    username = request.POST['username']
+    username = request.user.username
 
     # checks if the room exists in the database
     if Room.objects.filter(name=room).exists():
@@ -68,3 +76,29 @@ def getMessages(request, room):
     # returns a json response containing a list of messages, used to fetch messages
     # in real time for display in the chat room
     return JsonResponse({"messages":list(messages.values())})
+
+
+
+class RegisterView(View):
+    form_class = CustomUserCreationForm
+
+    def get(self, request, *args, **kwargs):
+        print("test1")
+        form = self.form_class()
+        return render(request, 'register.html', {'form':form})
+    
+    def post(self, request, *args, **kwargs):
+        print("test2")
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('login')  # Redirect to your home page or wherever you like
+        return render(request, 'register.html', {'form': form})
+    
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
+    template_name = 'login.html' 
+
+class CustomLogoutView(LogoutView):
+    next_page = 'home'  # Redirect to home page or login page
