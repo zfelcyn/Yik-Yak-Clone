@@ -31,12 +31,35 @@
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
         width: 100%;
-        max-width: 360px;
+        max-width: 512px;
         margin: 10px 0;
+        align-items: center;
+        align-self: center;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+
+      .container-not-scrollable {
+        background-color: #1e1e1e; /* Slightly lighter dark shade for containers */
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        border: 1px solid #333333; /* Dark border to blend in */
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+        width: 100%;
+        max-width: 512px;
+        margin: 10px 0;
+        align-items: center;
+        align-self: center;
       }
 
       .darker {
+        width: 90%;
+        align-self: center;
         background-color: #2a2a2a; /* Even lighter dark shade for message containers */
+        margin: 10px auto;
+        white-space: normal;
       }
 
       .user-name {
@@ -46,7 +69,16 @@
       }
 
       .message-text {
+        white-space: normal;
+        word-wrap: break-word;
         color: #ffffff; /* White color for message text */
+      }
+
+      .char-count-text {
+        color: #9c9c9c;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        margin-left: 10px;
       }
 
       .time-left {
@@ -56,7 +88,7 @@
 
       input[type="text"],
       select {
-        width: calc(100% - 24px);
+        width: 100%;
         padding: 12px;
         margin-top: 8px;
         border: none;
@@ -70,7 +102,7 @@
         display: block;
         width: 100%;
         padding: 12px;
-        margin-top: 20px;
+        margin-top: 5px;
         background-color: #007aff; /* Bright blue submit button */
         border: none;
         border-radius: 20px;
@@ -81,6 +113,46 @@
       input[type="submit"]:hover {
         background-color: #005ecb; /* Darker blue on hover */
       }
+
+      .logout {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #747474; /* Bright blue submit button */
+        border: none;
+        border-radius: 20px;
+        color: white;
+        cursor: pointer;
+      }
+
+      .logout:hover {
+        color: black;
+        background-color: #b1b1b1; /* Darker blue on hover */
+      }
+      
+      /* Scrollbar Customization */
+      ::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+        border: 1px solid #636363; /* Dark border to blend in */
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #636363; /* Color of the track */
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #1e1e1e; /* Color of the thumb */
+        border: 1px solid #1e1e1e; /* Dark border to blend in */
+        border-radius: 10px;
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #424242; /* Color of the thumb on hover */
+      }
+      
+
     </style>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
   </head>
@@ -91,7 +163,7 @@
       <!-- Message display area will be updated by AJAX below -->
     </div>
 
-    <div class="container">
+    <div class="container-not-scrollable">
       <form id="post-form">
         {% csrf_token %}
         <input
@@ -111,20 +183,29 @@
           name="message"
           id="message"
           placeholder="Type your message here..."
+          maxlength="256"
         />
+        <div class="char-count-text" id="charCount"></div>
         <input type="submit" value="Send" />
       </form>
-    </div>
+      </div>
 
-    <div class="container">
-      <form id="logout-form" action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-      </form>
+      <div class="container-not-scrollable">
+        <form id="logout-form" action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class="logout" type="submit">Logout</button>
+        </form>
+
     </div>
 
     <script>
       $(document).ready(function () {
+        messagesLoading = true; // This boolean is here for the initial scrolling when the chat window is fully loaded
+
+        // This creates the character counter.
+        document.getElementById("charCount").textContent = 0 + " / " + document.getElementById("message").maxLength;
+
+        // This is the code that displays the messages.
         setInterval(function () {
           $.ajax({
             type: "GET",
@@ -133,15 +214,34 @@
               $("#display").empty();
               for (var key in response.messages) {
                 var temp =
-                  "<div class='container darker'><span class='user-name'>" +
+                  "<div class='container-not-scrollable darker'><span class='user-name'>" +
                   response.messages[key].user +
                   "</span><span class='message-text'>" +
                   response.messages[key].value +
                   "</span><span class='time-left'>" +
-                  response.messages[key].date +
+                  formatDate(response.messages[key].date) +
                   "</span></div>";
                 $("#display").append(temp);
+                
+                // This loop makes sure there is only up to 20 messages displayed on screen at once.
+                messageCount = Object.keys(response.messages).length;
+                while (messageCount > 20)
+                {
+                  const keysArray = Object.keys(response.messages)
+                  delete response.messages[keysArray[0]]
+
+                  messageCount--;
+                }
               }
+
+              // This if block checks to see if the page just loaded, and if it did, scroll to the bottom of the chat window
+              // This only runs once, since messageLoading is set to false immediately after and is never set to true again
+              if (messagesLoading)
+              {
+                var scrollableChat = $('#display');
+                scrollableChat.scrollTop(scrollableChat.prop('scrollHeight'));
+              }
+              messagesLoading = false;
             },
             error: function () {
               alert("An error occurred");
@@ -149,24 +249,71 @@
           });
         }, 1000);
 
-        $(document).on("submit", "#post-form", function (e) {
-          e.preventDefault();
-          $.ajax({
-            type: "POST",
-            url: "/send",
-            data: {
-              username: $("#username").val(),
-              room_id: $("#room_id").val(),
-              message: $("#message").val(),
-              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
-            },
-            success: function () {
-              $("#message").val(""); // Clear the input after send
-            },
-          });
+
+        // Character counter logic. By default, it is set to 256. This can be changed with the "maxlength" variable inside "message".
+        document.getElementById("message").addEventListener("input", function() {
+            var maxLength = this.maxLength;
+            var currentLength = this.value.length;
+            var remaining = maxLength - currentLength;
+            var charCountElement = document.getElementById("charCount");
+
+            if (remaining >= 0) {
+                charCountElement.textContent = currentLength + " / " + maxLength;
+            } else {
+                // Prevent further input if the limit is exceeded
+                this.value = this.value.substring(0, maxLength);
+            }
         });
+
+        $(document).on("submit", "#post-form", function (e) { // This is the submit message event.
+          e.preventDefault();
+          if ($("#message").val().length > 0)
+          {
+            $.ajax({
+              type: "POST",
+              url: "/send",
+              data: {
+                username: $("#username").val(),
+                room_id: $("#room_id").val(),
+                message: $("#message").val(),
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+              },
+              success: function () {
+                $("#message").val(""); // Clear the input after send
+                document.getElementById("charCount").textContent = 0 + " / " + document.getElementById("message").maxLength; // Reset character counter after send
+              },
+            });
+          }
+        });  
       });
+
+
+      function formatDate(dateString) // This function formats the date into HO:MI P MM/DD/YY format. Example: "10:43 PM 03/14/24"
+      {
+        // Get Date
+        const date = new Date(dateString);
+        
+        // Get hours, minutes and AM/PM from date
+        const hours = date.getHours() + 7;
+        const minutes = date.getMinutes();
+        const period = hours < 12 ? "AM" : "PM";
+
+        // Format the minutes so that a single digit number has a 0 in front and format hours for 12 AM
+        const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+        const formattedHours = hours % 12 || 12;
+
+        // Get the date in the form of year, month and day
+        const year = date.getFullYear().toString().slice(-2); // Slice so that it only has the last two digits just like MM/DD/YY format
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        // Format month and day so that they are in the proper MM/DD/YY format
+        const formattedMonth = month < 10 ? "0" + month : month;
+        const formattedDay = day < 10 ? "0" + day : day;
+
+        const finalDate = `${formattedHours}:${formattedMinutes} ${period} | ${formattedMonth}/${formattedDay}/${year}`;
+        return finalDate;
+      }
     </script>
   </body>
 </html>
-
