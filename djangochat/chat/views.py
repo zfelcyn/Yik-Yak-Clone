@@ -102,7 +102,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('login')  # Redirect to your home page or wherever you like
+            return redirect('home')  # Redirect to your home page or wherever you like
         return render(request, 'register.html', {'form': form})
     
 class CustomLoginView(LoginView):
