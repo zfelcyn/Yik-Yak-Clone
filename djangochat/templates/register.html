@@ -56,6 +56,11 @@
         flex-direction: column;
       }
 
+      .input-box {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
       input[type="text"],
       select,
       button {
@@ -91,7 +96,19 @@
         <!-- Assuming Django template language for CSRF token and form fields -->
         {% csrf_token %}
         <!-- Assuming form.as_p prints each form field wrapped in a <p> tag -->
-        {{ form.as_p }}
+          <div class="input-box">
+          Username:
+          {{ form.username }}
+          Only alphanumeric characters and - are allowed.
+        </div>
+        <div class="input-box">
+          Email:
+          {{ form.email }}
+        </div>
+        <div class="input-box">
+          Password:
+          {{ form.password }}
+          </div>
         <button type="submit">Register</button>
       </form>
     </div>
