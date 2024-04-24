@@ -16,6 +16,9 @@ from django.views.generic import View
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from django.contrib.sessions.models import Session
+from django.utils import timezone
+from django.contrib.auth import get_user_model
 
 # Create your views here. Takes a http response and returns an http response, landing page of the chat app
 def home(request):
@@ -25,7 +28,10 @@ def home(request):
 def room(request, room):
     # extracts username from the get request parameters
     username = request.user.username
-    print(username)
+    if (username):
+        print(username)
+    else:
+        print("wrgindfosjdndgfcgvdfseindgvcfdskopjidg")
     # queries the room model for a room with the given name and stores it in
     # room_details. This retrieves info about the chat room from the database
     room_details  = get_object_or_404(Room, name=room)
@@ -41,7 +47,10 @@ def room(request, room):
 def checkview(request):
     # retrives the room name and username from the POST request data
     room = request.POST['room_name']
+
     username = request.user.username
+
+
 
     # checks if the room exists in the database
     if Room.objects.filter(name=room).exists():
