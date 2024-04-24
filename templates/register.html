@@ -18,6 +18,7 @@
         align-items: center;
         min-height: 100vh;
         padding: 20px;
+        overflow: hidden;
       }
 
       .container {
@@ -56,11 +57,47 @@
         flex-direction: column;
       }
 
+      .form-text {
+        margin-top: 20px;
+        margin-bottom: 2px;
+      }
+
+      .instruction-text {
+        font-size: 14px;
+        color: #5c5c5c;
+        margin-top: 5px;
+        margin-bottom: 0px;
+      }
+
       input[type="text"],
       select,
       button {
         padding: 12px;
-        margin-top: 10px;
+        margin-top: 3px;
+        border: 2px solid #29b6f6; /* Sky blue border */
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+      }
+
+      input[type="email"],
+      select,
+      button {
+        padding: 12px;
+        margin-top: 3px;
+        border: 2px solid #29b6f6; /* Sky blue border */
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+      }
+
+      input[type="password"],
+      select,
+      button {
+        padding: 12px;
+        margin-top: 3px;
         border: 2px solid #29b6f6; /* Sky blue border */
         border-radius: 8px;
         width: 100%;
@@ -69,6 +106,7 @@
       }
 
       button {
+        margin-top: 20px;
         background-color: #039be5; /* Bright blue */
         color: white;
         cursor: pointer;
@@ -79,21 +117,101 @@
       button:hover {
         background-color: #0277bd; /* Darker blue on hover */
       }
+
+      .top-right-buttons {
+        font-family: "Open Sans", sans-serif;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+      }
+      .top-right-buttons button {
+        margin-top: 4px;
+        border: 1px solid #8c8c8c; 
+        background-color: #f2f2f2;
+        color: #007aff;
+        margin-left: 4px;
+        font-weight: 600;
+      }
     </style>
   </head>
   <body>
+
+    <div class="top-right-buttons">
+      <button onclick="window.location.href='http://localhost:8000/login/'">
+        Back to Login
+      </button>
+    </div>
+
     <div class="container">
       <h2>Registration Page</h2>
       <p class="smaller-text">
         We only sell some data... hey we deserve a coffee ☕
       </p>
+
       <form method="post">
-        <!-- Assuming Django template language for CSRF token and form fields -->
         {% csrf_token %}
-        <!-- Assuming form.as_p prints each form field wrapped in a <p> tag -->
-        {{ form.as_p }}
+        {% if form.errors %}
+            {% if 'username' in form.errors %}
+                <p style="color: red; margin: 2px;">Error: Invalid username</p>
+            {% endif %}
+            {% if 'email' in form.errors %}
+                <p style="color: red; margin: 2px;">Error: Invalid email</p>
+            {% endif %}
+            {% if 'password1' in form.errors %}
+                <p style="color: red; margin: 2px;">Error: Invalid Password</p>
+            {% elif 'password2' in form.errors %}
+                {% for error in form.errors.password2 %}
+                    {% if 'The two password fields didn’t match.' in error %}
+                        <p style="color: red; margin: 2px;">Error: Password mismatch</p>
+                    {% else %}
+                        <p style="color: red; margin: 2px;">Error: Invalid Password</p>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p style="color: red; margin: 2px;">An unknown error occured, please try again later.</p>
+            {% endif %}
+        {% endif %}
+        
+        <label class="form-text" for="id-username">Username</label>
+        <input
+          type="text"
+          name="username"
+          maxlength="20"
+          required id="id-username"
+          placeholder="Enter Username"
+        />
+        <p class="instruction-text">Usernames should only have alphanumeric characters and -.</p>
+
+        <label class="form-text" for="id-email">Email Address</label>
+        <input
+          type="email"
+          name="email"
+          required id="id-email"
+          placeholder="Enter Email Address"
+        />
+
+        <label class="form-text" for="id-password1">Password</label>
+        <input
+          type="password"
+          name="password1"
+          required id="id-password1"
+          placeholder="Enter Password"
+        />
+        <p class="instruction-text">Your password cannot be all numeric, must be at least 8 characters and cannot be a common password.</p>
+
+        <label class="form-text" for="id-password2">Confirm Password</label>
+        <input
+          type="password"
+          name="password2"
+          required id="id-password2"
+          placeholder="Confirm Password"
+        />
+        <p class="instruction-text">Make sure that this matches your Password field.</p>
+
         <button type="submit">Register</button>
+
       </form>
+
     </div>
   </body>
 </html>

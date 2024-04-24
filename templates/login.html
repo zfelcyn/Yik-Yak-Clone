@@ -46,6 +46,13 @@
         display: flex;
         flex-direction: column;
       }
+
+      .login-advice {
+        color: #606060;
+        font-size: 12px;
+      }
+
+
       input[type="text"],
       input[type="password"] {
         padding: 12px;
@@ -82,6 +89,9 @@
         color: #007aff;
         margin-left: 4px;
       }
+
+
+
     </style>
   </head>
   <body>
@@ -101,12 +111,21 @@
       <p class="smaller-text">Powered by Django Backend</p>
       <form id="post-form" method="post" action="/login/">
         {% csrf_token %}
+
+        {% if form.errors %}
+            {% if '__all__' in form.errors %}
+                <p style="color: red; margin: 2px;">Error: Invalid username or password.</p>
+            {% else %}
+                <p style="color: red; margin: 2px;">An unknown error has occured, please try again later.</p>
+            {% endif %}
+        {% endif %}
+
         <label for="room_name">Location</label>
         <input
           type="text"
           name="room_name"
           id="room_name"
-          placeholder="City will autofill here"
+          placeholder="Finding location..."
           readonly
         />
         <label for="username">Username</label>
@@ -123,8 +142,9 @@
           id="password"
           placeholder="Enter Password"
         />
-        <input type="submit" value="Enter Room" onclick="setRoomName()" />
+        <input id="logInButton" type="submit" value="Enter Room" onclick="setRoomName()" />
       </form>
+      <div class="login-advice">Can't find your location? Try using a Chromium-based browser (ex: Google Chrome, Edge)</div>
     </div>
     <script>
       function setRoomName() {
@@ -140,6 +160,13 @@
       }
 
       window.onload = function () {
+
+        // Gray out the login button until the location has been found
+        var loginButton = document.getElementById("logInButton");
+        loginButton.disabled = true;
+        loginButton.style.cursor = "not-allowed";
+        loginButton.style.opacity = 0.5;
+
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             function (position) {
@@ -155,6 +182,11 @@
                     data.address.town ||
                     data.address.village ||
                     "Location not found";
+                  
+                    // Re-enable the login button when the location is found
+                    loginButton.disabled = false;
+                    loginButton.style.cursor = "pointer"
+                    loginButton.style.opacity = 1;
                 })
                 .catch((error) => {
                   console.error("Error fetching location:", error);
