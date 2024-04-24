@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Login - Node-Social</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet" />
     <style>
       body {
         margin: 0;
@@ -83,87 +80,81 @@
         margin-left: 4px;
       }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="top-right-buttons">
-      <button
-        onclick="window.location.href='https://github.com/zfelcyn/Yik-Yak-Clone'"
-      >
-        GitHub
-      </button>
-      <button onclick="window.location.href='http://localhost:8000/register/'">
-        Register
-      </button>
+      <button onclick="window.location.href='https://github.com/zfelcyn/Yik-Yak-Clone'">GitHub</button>
+      <button onclick="window.location.href='http://localhost:8000/register/'">Register</button>
       <button onclick="displayReadMe()">ReadMe</button>
     </div>
     <div class="container">
       <h2>Node-Yak 🐐</h2>
       <p class="smaller-text">Powered by Django Backend</p>
-      <form id="post-form" method="POST" action="/login/checkview/">
+      <form
+        id="post"
+        method="POST"
+        action="http://127.0.0.1:8000/login/checkview/"
+      >
         {% csrf_token %}
-        <label for="room_name">Location</label>
-        <input
-          type="text"
-          name="room_name"
-          id="room_name"
-          placeholder="City will autofill here"
-          readonly
-        />
-        <label for="username">Username</label>
         <input
           type="text"
           name="username"
           id="username"
-          placeholder="Enter Username"
+          placeholder="Username"
         />
-        <label for="password">Password</label>
         <input
           type="password"
           name="password"
           id="password"
-          placeholder="Enter Password"
+          placeholder="Password"
         />
-        <input type="submit" value="Enter Room" />
+        <input
+          type="text"
+          name="room_name"
+          id="room_name"
+          placeholder="Location"
+        />
+        <button type="submit">Login</button>
       </form>
     </div>
     <script>
-      function displayReadMe() {
-        alert("Django Backend Project for CPTS 322. User Auth under Dev");
-      }
-
-      window.onload = function () {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-            function (position) {
-              var latitude = position.coords.latitude;
-              var longitude = position.coords.longitude;
-              var apiURL = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-
-              fetch(apiURL)
-                .then((response) => response.json())
-                .then((data) => {
-                  document.getElementById("room_name").value =
-                    data.address.city ||
-                    data.address.town ||
-                    data.address.village ||
-                    "Location not found";
-                })
-                .catch((error) => {
-                  console.error("Error fetching location:", error);
-                  document.getElementById("room_name").value =
-                    "Error fetching location";
-                });
-            },
-            function (error) {
-              document.getElementById("room_name").value =
-                "Location access denied.";
-            }
-          );
-        } else {
-          document.getElementById("room_name").value =
-            "Geolocation not supported";
+        function displayReadMe() {
+            alert("Django Backend Project for CPTS 322. User Auth under Dev");
         }
-      };
+
+        window.onload = function () {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
+                        var apiURL = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
+                        fetch(apiURL)
+                            .then((response) => response.json())
+                            .then((data) => {
+                                document.getElementById("room_name").value =
+                                    data.address.city ||
+                                    data.address.town ||
+                                    data.address.village ||
+                                    "Location not found";
+                            })
+                            .catch((error) => {
+                                console.error("Error fetching location:", error);
+                                document.getElementById("room_name").value =
+                                    "Error fetching location";
+                            });
+                    },
+                    function (error) {
+                        document.getElementById("room_name").value =
+                            "Location access denied.";
+                    }
+                );
+            } else {
+                document.getElementById("room_name").value =
+                    "Geolocation not supported";
+            }
+        };
     </script>
-  </body>
+</body>
 </html>
