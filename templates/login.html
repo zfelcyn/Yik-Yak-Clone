@@ -112,6 +112,7 @@
       <form id="post-form" method="post" action="/login/">
         {% csrf_token %}
 
+        <!-- This controls the form errors, for example if the username or password is invalid -->
         {% if form.errors %}
             {% if '__all__' in form.errors %}
                 <p style="color: red; margin: 2px;">Error: Invalid username or password.</p>

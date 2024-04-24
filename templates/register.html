@@ -148,28 +148,35 @@
         We only sell some data... hey we deserve a coffee ☕
       </p>
 
+      <!-- Start of the register form -->
       <form method="post">
         {% csrf_token %}
+
+        <!-- This controls the error messages. These will only appear if the form was submitted already with errors. -->
         {% if form.errors %}
             {% if 'username' in form.errors %}
                 <p style="color: red; margin: 2px;">Error: Invalid username</p>
-            {% endif %}
-            {% if 'email' in form.errors %}
+
+            {% elif 'email' in form.errors %}
                 <p style="color: red; margin: 2px;">Error: Invalid email</p>
-            {% endif %}
-            {% if 'password1' in form.errors %}
+
+            {% elif 'password1' in form.errors %}
                 <p style="color: red; margin: 2px;">Error: Invalid Password</p>
+
             {% elif 'password2' in form.errors %}
                 {% for error in form.errors.password2 %}
                     {% if 'The two password fields didn’t match.' in error %}
                         <p style="color: red; margin: 2px;">Error: Password mismatch</p>
+
                     {% else %}
                         <p style="color: red; margin: 2px;">Error: Invalid Password</p>
                     {% endif %}
                 {% endfor %}
+
             {% else %}
                 <p style="color: red; margin: 2px;">An unknown error occured, please try again later.</p>
             {% endif %}
+
         {% endif %}
         
         <label class="form-text" for="id-username">Username</label>
@@ -180,7 +187,7 @@
           required id="id-username"
           placeholder="Enter Username"
         />
-        <p class="instruction-text">Usernames should only have alphanumeric characters and -.</p>
+        <p class="instruction-text">Usernames should only have alphanumeric characters and -, and have a max of 20 characters.</p>
 
         <label class="form-text" for="id-email">Email Address</label>
         <input
