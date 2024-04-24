@@ -13,7 +13,11 @@
         margin: 0;
         padding: 0;
         font-family: "Open Sans", sans-serif;
-        background: linear-gradient(to bottom right, #007aff, #000); /* Blue to darker gradient */
+        background: linear-gradient(
+          to bottom right,
+          #007aff,
+          #000
+        ); /* Blue to darker gradient */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -52,7 +56,8 @@
         box-sizing: border-box;
         width: 100%;
       }
-      button {
+      button,
+      input[type="submit"] {
         background-color: #007aff;
         color: white;
         padding: 14px 20px;
@@ -62,7 +67,8 @@
         cursor: pointer;
         font-weight: 600;
       }
-      button:hover {
+      button:hover,
+      input[type="submit"]:hover {
         background-color: #0056b3;
         color: white;
       }
@@ -80,38 +86,44 @@
   </head>
   <body>
     <div class="top-right-buttons">
-      <button onclick="window.location.href='https://github.com/zfelcyn/Yik-Yak-Clone'">GitHub</button>
-      <button onclick="window.location.href='http://localhost:8000/register/'">Register</button>
+      <button
+        onclick="window.location.href='https://github.com/zfelcyn/Yik-Yak-Clone'"
+      >
+        GitHub
+      </button>
+      <button onclick="window.location.href='http://localhost:8000/register/'">
+        Register
+      </button>
       <button onclick="displayReadMe()">ReadMe</button>
     </div>
     <div class="container">
       <h2>Node-Yak 🐐</h2>
       <p class="smaller-text">Powered by Django Backend</p>
-      <form
-        id="post"
-        method="POST"
-        action="http://127.0.0.1:8000/login/checkview/"
-      >
+      <form id="post-form" method="POST" action="/login/checkview/">
         {% csrf_token %}
-        <input
-          type="text"
-          name="username"
-          id="username"
-          placeholder="Username"
-        />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Password"
-        />
+        <label for="room_name">Location</label>
         <input
           type="text"
           name="room_name"
           id="room_name"
-          placeholder="Location"
+          placeholder="City will autofill here"
+          readonly
         />
-        <button type="submit">Login</button>
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Enter Username"
+        />
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter Password"
+        />
+        <input type="submit" value="Enter Room" />
       </form>
     </div>
     <script>
@@ -155,4 +167,3 @@
     </script>
   </body>
 </html>
-
