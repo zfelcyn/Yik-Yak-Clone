@@ -100,7 +100,7 @@
               "RelativeDocumentMoniker": "chat\\views.py",
               "ToolTip": "D:\\School\\YY\\chat\\views.py",
               "RelativeToolTip": "chat\\views.py",
-              "ViewState": "AQIAAJQAAAAAAAAAAAAAwKIAAABSAAAA",
+              "ViewState": "AQIAAMcAAAAAAAAAAAAAwKIAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
               "WhenOpened": "2024-04-24T05:48:10.317Z",
               "EditorCaption": ""
@@ -115,8 +115,7 @@
               "RelativeToolTip": "chat\\urls.py",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACUAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-04-24T05:48:08.365Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-24T05:48:08.365Z"
             },
             {
               "$type": "Document",
@@ -128,8 +127,7 @@
               "RelativeToolTip": "chat\\models.py",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
-              "WhenOpened": "2024-04-24T05:48:07.693Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-24T05:48:07.693Z"
             }
           ]
         }
