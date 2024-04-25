@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends Chat</title>
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .message {
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+        }
+
+        .message-input {
+            width: calc(100% - 80px);
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+        }
+
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "Helvetica Neue", Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background: #121212; /* Dark background for the whole page */
+          color: #e0e0e0; /* Light text for readability */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 100vh;
+        }
+  
+        h2 {
+          color: #0dafff; /* Light blue color for the heading */
+          margin-top: 20px;
+        }
+  
+        .container {  
+          background-color: #1e1e1e; /* Slightly lighter dark shade for containers */
+          backdrop-filter: blur(10px);
+          border-radius: 10px;
+          border: 1px solid #333333; /* Dark border to blend in */
+          padding: 20px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+          width: 100%;
+          max-width: 512px;
+          margin: 10px 0;
+          align-items: center;
+          align-self: center;
+          overflow-y: auto;
+          overflow-x: hidden;
+          scroll-behavior: smooth;
+        }
+  
+        .container-not-scrollable {
+          background-color: #1e1e1e; /* Slightly lighter dark shade for containers */
+          backdrop-filter: blur(10px);
+          border-radius: 10px;
+          border: 1px solid #333333; /* Dark border to blend in */
+          padding: 20px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+          width: 100%;
+          max-width: 512px;
+          margin: 10px 0;
+          align-items: center;
+          align-self: center;
+        }
+  
+        .darker {
+          width: 90%;
+          align-self: center;
+          background-color: #2a2a2a; /* Even lighter dark shade for message containers */
+          margin: 10px auto;
+          white-space: normal;
+        }
+  
+        .user-name {
+          font-weight: bold;
+          color: #4caf50; /* Green color to highlight user names */
+          margin-right: 5px; /* Space between name and message */
+        }
+  
+        .message-text {
+          white-space: normal;
+          word-wrap: break-word;
+          width: 30px;
+          color: #ffffff; /* White color for message text */
+        }
+  
+        .time-left {
+          color: #aaa; /* Grey color for timestamps */
+          float: right;
+        }
+  
+        input[type="text"],
+        select {
+          width: 100%;
+          padding: 12px;
+          margin-top: 8px;
+          border: none;
+          border-radius: 20px;
+          box-sizing: border-box;
+          background-color: #333333; /* Dark input fields */
+          color: #ddd; /* Light text for inputs */
+        }
+  
+        input[type="submit"] {
+          display: block;
+          width: 100%;
+          padding: 12px;
+          margin-top: 20px;
+          background-color: #007aff; /* Bright blue submit button */
+          border: none;
+          border-radius: 20px;
+          color: white;
+          cursor: pointer;
+        }
+  
+        input[type="submit"]:hover {
+          background-color: #005ecb; /* Darker blue on hover */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    
+        <h1 class="text-3xl font-bold text-center text-gray-900">Friends Chat</h1>
+
+        <div class="sidebar">
+            <div class="w-1/3">
+                <h2 class="text-xl font-bold text-gray-800">Friends List</h2>
+                <ul>
+                    <!--Need to replace with AJAX to dynamically show friends from friends in friendslist-->
+                    <li class="text-lg text-blue-500 cursor-pointer hover:underline">Friend 1</li>
+                    <li class="text-lg text-blue-500 cursor-pointer hover:underline">Friend 2</li>
+                    <li class="text-lg text-blue-500 cursor-pointer hover:underline">Friend 3</li>
+                </ul>
+            </div>
+          </div>
+            
+                <!--Display messages-->
+                <!--Later implement so incoming vs outgoing messages are formatted properly rather than just incoming-->
+                <div id="display" class="message outgoing-message">
+                  <!-- Message display area will be updated by AJAX below under "display" -->
+                </div>
+                <div class="container-not-scrollable">
+                  <form id="post-form">
+                    {% csrf_token %}
+                    <input
+                      type="hidden"
+                      name="username"
+                      id="username"
+                      value="{{username}}"
+                    />
+                    <input
+                      type="hidden"
+                      name="room_id"
+                      id="room_id"
+                      value="{{room_details.id}}"
+                    />
+                    
+                   
+                
+            </div>
+            <div class="container-not-scrollable">
+              <form id="post-form">
+                {% csrf_token %}
+                <input
+                  type="hidden"
+                  name="username"
+                  id="username"
+                  value="{{username}}"
+                />
+                <input
+                  type="hidden"
+                  name="room_id"
+                  id="room_id"
+                  value="{{room_details.id}}"
+                />
+                <!--Write a message-->
+                <input
+                  type="text"
+                  name="message"
+                  id="message"
+                  placeholder="Type your message here..."
+                />
+                <input type="submit" value="Send" />
+              </form>
+            
+    </div>
+
+    <!--Dynamic code for getting dms to the user-->
+    <script>
+        $(document).ready(function () {
+          setInterval(function () {
+            $.ajax({
+              type: "GET",
+              url: "/getDirectMessages/{{user}}/", 
+              success: function (response) {
+                $("#display").empty();
+                for (var key in response.messages) {
+                  var temp =
+                    "<div class='container-not-scrollable darker'><span class='user-name'>" +
+                    response.messages[key].user +
+                    "</span><span class='message-text'>" +
+                    response.messages[key].value +
+                    "</span><span class='time-left'>" +
+                    formatDate(response.messages[key].date) +
+                    "</span></div>";
+                  $("#display").append(temp);
+                  
+                  messageCount = Object.keys(response.messages).length;
+                  while (messageCount > 20)
+                  {
+                    const keysArray = Object.keys(response.messages)
+                    delete response.messages[keysArray[0]]
+  
+                    messageCount--;
+                  }
+                }
+              },
+              error: function () {
+                alert("An error occurred");
+              },
+            });
+          }, 1000);
+   
+          //Updates the message board when a message is sent
+          $(document).on("submit", "#post-form", function (e) {
+            e.preventDefault();
+            $.ajax({
+              type: "POST",
+              url: "/send",
+              data: {
+                username: $("#username").val(),
+                room_id: $("#room_id").val(),
+                message: $("#message").val(),
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+              },
+              success: function () {
+                $("#message").val(""); // Clear the input after send
+              },
+            });
+          });
+          
+        });
+
+        
+
+        function formatDate(dateString) // This function formats the date into a string properly. Example: "10:43 PM 03/14/24"
+        {
+          // Get Date
+          const date = new Date(dateString);
+          
+          // Get hours, minutes and AM/PM from date
+          const hours = date.getHours() + 7;
+          const minutes = date.getMinutes();
+          const period = hours < 12 ? "AM" : "PM";
+  
+          // Format the minutes so that a single digit number has a 0 in front and format hours for 12 AM
+          const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+          const formattedHours = hours % 12 || 12;
+  
+          // Get the date in the form of year, month and day
+          const year = date.getFullYear().toString().slice(-2); // Slice so that it only has the last two digits
+          const month = date.getMonth() + 1;
+          const day = date.getDay();
+  
+          // Format month and day so that 
+          const formattedMonth = month < 10 ? "0" + month : month;
+          const formattedDay = day < 10 ? "0" + day : day;
+  
+          const finalDate = `${formattedHours}:${formattedMinutes} ${period} | ${formattedMonth}/${formattedDay}/${year}`;
+          return finalDate;
+        }
+
+    </script>
+</body>
+
+</html>
+
+

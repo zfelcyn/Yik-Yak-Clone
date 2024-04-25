@@ -18,6 +18,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('login/checkview/',views.checkview, name='login2'),
+    path('friendsList/', views.friendsPage, name='friendsPage'),
     # dynamic segment <str:room> matches any string and passes a room argum,ent, hekpful for creating urls based on username
     path('<str:room>/', views.room,name='room'),
     # path that leads to checkview, will explain this more in .views
@@ -26,5 +27,8 @@ urlpatterns = [
     path('send', views.send, name='send'),
     # dynamic url pattern that fetches messages for a single room
     path('getMessages/<str:room>/', views.getMessages,name='getMessages'),
+    #dynamic url pattern that fetches messages for a direct message room
+    path('getDirectMessages/<str:user>/', views.getDirectMessages,name='getDirectMessages'),
+    
 
 ]

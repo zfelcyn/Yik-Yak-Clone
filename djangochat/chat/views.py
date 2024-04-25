@@ -4,12 +4,12 @@ from django.shortcuts import render, redirect # imports render and redirect from
 # and returns an HttpResponse with that renderred text, while redirect is a utility to redirect the user to a different URL
 # Imports room and message models from the models.py file in the chat file, models define
 # the database schema fro the chatrooms and messages
-from chat.models import Room, Message
+from chat.models import Room, Message, DirectMessage, User, DirectMessageRoom
 #imports httpresponse and json response from djangos http module,
 # httpresponse is used to pass the response back to the web browser, and jsonresponse
 # is a subclass of httpresponse that helps to create a json encoded response
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
 
 from django.urls import reverse_lazy
 from django.views.generic import View
@@ -40,6 +40,26 @@ def room(request, room):
     return render(request, 'room.html', {
         'username' : username,
         'room' : room,
+        'room_details' : room_details
+    })
+
+
+#handles logic of joining direct messaging room
+def directMessageRoom(request, room):
+    # extracts username from the get request parameters
+    username = request.user.username
+    if (username):
+        print(username)
+    else:
+        print("wrgindfosjdndgfcgvdfseindgvcfdskopjidg")
+    # queries the room model for a room with the given name and stores it in
+    # room_details. This retrieves info about the chat room from the database
+    room_details  = get_object_or_404(DirectMessageRoom, name=room)
+    # renders room.html template, passing in username, room name, and room_details for context to the template
+    # this is teh main chat room page where messages are displayed
+    return render(request, 'friends.html', { #when a different name is selected it will refresh the page which reloads the chat box
+        'username' : username,
+        'directMessageroom' : room,
         'room_details' : room_details
     })
 
@@ -86,7 +106,19 @@ def getMessages(request, room):
     # in real time for display in the chat room
     return JsonResponse({"messages":list(messages.values())})
 
+#defined a view function that retrieves messages from a specific user to
+def getDirectMessages(user):
+    user_details=User.objects.get(name=user)
+    messages=DirectMessage.objets.filter(user_details.id)
+    return JsonResponse({"messages":list(messages.values())})
 
+#retrieves the friends of a specific user
+#will be implemented by other group member
+def getFriends(user):
+    pass
+
+def friendsPage(request):
+    return render(request, 'friends.html')
 
 class RegisterView(View):
     form_class = CustomUserCreationForm
