@@ -1,0 +1,1 @@
+The code here has a working and secure account system, a realtime chat application which uses an SQLite database, and a django backend and html frontend, with all functioning urls. Alongside this, we have a dm and friend system, although we are still doing bug fixes.
