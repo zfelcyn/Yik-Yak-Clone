@@ -20,6 +20,12 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('chat/logout/', CustomLogoutView.as_view(), name='logout'),
     path('login/checkview/',views.checkview, name='checkview'),
+    
+    path('friend-requests/', views.view_friend_requests, name='view_friend_requests'),
+    path('send-friend-request/', views.send_friend_request, name='send_friend_request'),
+    path('handle-friend-request/<int:request_id>/', views.handle_friend_request, name='handle_friend_request'),
+    path('view-friends/', views.view_friends, name='view_friends'),
+    
     # dynamic segment <str:room> matches any string and passes a room argument, hekpful for creating urls based on username
     path('<str:room>/', views.room,name='room'),
     # path that leads to checkview, will explain this more in .views

@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Friends List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #0dafff;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .friends-list {
+            max-width: 360px;
+            margin: 20px auto;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            border: 1px solid #333333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+            .friends-list ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .friends-list li {
+                margin-bottom: 5px;
+                color: #ddd;
+            }
+    </style>
+</head>
+<body>
+    <h1>Your Friends</h1>
+    <div class="friends-list">
+        <ul>
+            {% for friendship in user_friends %}
+            {% if friendship.user1 == request.user %}
+            <li>{{ friendship.user2.username }}</li>
+            {% elif friendship.user2 == request.user %}
+            <li>{{ friendship.user1.username }}</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
