@@ -26,4 +26,5 @@ To get your development environment running, follow these steps:
    If you're on mac or linux use python3
    ```bash
    python manage.py runserver
-   If not auto redirected go to http://localhost:8000/login/
+
+ If not auto redirected go to http://localhost:8000/login/
