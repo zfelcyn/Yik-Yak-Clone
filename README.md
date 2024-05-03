@@ -1,6 +1,6 @@
 # NodeYak
 
-Welcome to NodeYak, a Django-based location application designed for interaction and connectivity. This is for our CPTS 322 Project for our team called "Yak-Men
+Welcome to NodeYak, a Django-based location-services application designed for local-community driven communication. This is for our CPTS 322 Project for our team called "Yak-Men
 
 ## Getting Started
 
