@@ -23,5 +23,7 @@ To get your development environment running, follow these steps:
 2. **Open the djangochat folder:**
 
 3. **Running the project:**
-   Type python or (python3 on linux or mac) then manage.py runserver following
+   If you're on mac or linux use python3
+   ```bash
+   python manage.py runserver
    If not auto redirected go to http://localhost:8000/login/
