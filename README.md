@@ -1,1 +1,27 @@
-The code here has a working and secure account system, a realtime chat application which uses an SQLite database, and a django backend and html frontend, with all functioning urls. Alongside this, we have a dm and friend system, although we are still doing bug fixes.
+# NodeYak
+
+Welcome to NodeYak, a Django-based location application designed for interaction and connectivity. This is for our CPTS 322 Project for our team called "Yak-Men
+
+## Getting Started
+
+These instructions will get your copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Python (3.8 or higher recommended)
+- pip (Python package installer)
+
+### Installing
+
+To get your development environment running, follow these steps:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/NodeYak.git
+   
+2. **Open the djangochat folder:**
+
+3. **Running the project:**
+   Type python or (python3 on linux or mac) then manage.py runserver following
+   If not auto redirected go to http://localhost:8000/login/
