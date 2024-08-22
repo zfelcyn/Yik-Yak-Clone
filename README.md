@@ -2,6 +2,12 @@
 
 Welcome to NodeYak, a Django-based location-services application designed for local-community driven communication. This is for our CPTS 322 Project for our team called "Yak-Men"
 
+### Tech stack
+- Backend: Django, MySQL
+- Frontend: HTML, CSS
+- Tools: Ajax for realtime communication
+
+
 ## Getting Started
 
 These instructions will get your copy of the project up and running on your local machine for development and testing purposes.
