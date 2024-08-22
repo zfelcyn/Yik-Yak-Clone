@@ -5,7 +5,7 @@ Welcome to NodeYak, a Django-based location-services application designed for lo
 ### Tech stack
 - Backend: Django, MySQL
 - Frontend: HTML, CSS
-- Tools: Ajax for realtime communication
+- Tools: Ajax for realtime communication, PythonAnyware for deployment
 
 
 ## Getting Started
